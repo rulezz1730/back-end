@@ -50,8 +50,22 @@ async function removeNote(id) {
     );
 }
 
+async function editNote(id, editTitle) {
+    let notes = await getNotes();
+    let editingNoteIndex = notes.findIndex((n) => n.id === id);
+    notes[editingNoteIndex] = { ...notes[editingNoteIndex], title: editTitle };
+
+    await fs.writeFile(notesPath, JSON.stringify(notes));
+    console.log(
+        chalk.bgBlueBright(
+            `Note with id ${id} was edited, new Title = ${editTitle}`
+        )
+    );
+}
+
 module.exports = {
     addNote,
     printNotes,
     removeNote,
+    editNote,
 };
